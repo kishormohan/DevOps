@@ -1,0 +1,101 @@
+#Establish a new directory, populate it with script files
+
+mkdir Test_repo
+touch test1.sh test2.sh test3.sh
+
+
+#convert the local directory into a Git repository
+
+git init
+git add test1.sh test2.sh test3.sh
+git commit -m "Testing Repo"
+
+
+#link it to GitHub for pushing the code into the repository
+
+git remote add Test https://github.com/kishormohan/Test_Repo.git
+git push -u Test
+
+
+*************************************************************************************************************************************************************************************************
+
+
+Output:
+
+#Establish a new directory, populate it with script files
+
+ubuntu@ip-172-31-84-167:~$ mkdir Test_Repo
+ubuntu@ip-172-31-84-167:~$ cd Test_Repo/
+ubuntu@ip-172-31-84-167:~/Test_Repo$ touch test1.sh test2.sh test3.sh
+ubuntu@ip-172-31-84-167:~/Test_Repo$ ls -ltrh
+total 0
+-rw-rw-r-- 1 ubuntu ubuntu 0 Apr 22 16:51 test3.sh
+-rw-rw-r-- 1 ubuntu ubuntu 0 Apr 22 16:51 test2.sh
+-rw-rw-r-- 1 ubuntu ubuntu 0 Apr 22 16:51 test1.sh
+
+
+
+
+#convert the local directory into a Git repository
+
+ubuntu@ip-172-31-84-167:~/Test_Repo$ git init
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint:
+hint:   git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint:   git branch -m <name>
+Initialized empty Git repository in /home/ubuntu/Test_Repo/.git/
+ubuntu@ip-172-31-84-167:~/Test_Repo$ git add test1.sh test2.sh test3.sh
+ubuntu@ip-172-31-84-167:~/Test_Repo$ git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   test1.sh
+        new file:   test2.sh
+        new file:   test3.sh
+
+ubuntu@ip-172-31-84-167:~/Test_Repo$ git commit -m "Testing Repo"
+[master (root-commit) 399e0be] Testing Repo
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 test1.sh
+ create mode 100644 test2.sh
+ create mode 100644 test3.sh
+ubuntu@ip-172-31-84-167:~/Test_Repo$ git status
+On branch master
+nothing to commit, working tree clean
+
+
+#link it to GitHub for pushing the code into the repository
+
+
+ubuntu@ip-172-31-84-167:~/Test_Repo$ git remote add Test https://github.com/kishormohan/Test_Repo.git
+ubuntu@ip-172-31-84-167:~/Test_Repo$ git status
+On branch master
+nothing to commit, working tree clean
+ubuntu@ip-172-31-84-167:~/Test_Repo$ git remote -v
+Test    https://github.com/kishormohan/Test_Repo.git (fetch)
+Test    https://github.com/kishormohan/Test_Repo.git (push)
+ubuntu@ip-172-31-84-167:~/Test_Repo$ git push -u Test
+Username for 'https://github.com': kishormohan
+Password for 'https://kishormohan@github.com':
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 223 bytes | 223.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+remote:
+remote: Create a pull request for 'master' on GitHub by visiting:
+remote:      https://github.com/kishormohan/Test_Repo/pull/new/master
+remote:
+To https://github.com/kishormohan/Test_Repo.git
+ * [new branch]      master -> master
+Branch 'master' set up to track remote branch 'master' from 'Test'.
+
