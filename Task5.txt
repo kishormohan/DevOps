@@ -1,0 +1,29 @@
+1.Shell script to print the HTTP error code of guvi.in & print, the success/failure message based on the error code response
+
+
+#!/bin/bash
+url="http://www.guvi.in/"
+Temp=$(curl -sI "$url")
+status=$(echo "$Temp" | grep -i "^HTTP/" | awk '{print $2}')
+echo $status
+if [[ "$status" == "200" ]]; then
+    echo "HTTP Status $status: Success! The website $url is accessible."
+else
+    echo "HTTP Status $status: Failure! There was an issue accessing the website $url."
+fi
+
+___________________________________________________________________________________________________________________________________________________________________________________________________
+
+
+2.Given a file, replace all occurrence of the word ""give"" with ""learning"" from the 5th line till the end in only those lines that contain the word "welcome"
+
+
+#!/bin/bash
+
+awk 'NR >= 5 && /welcome/ {print NR}' "sample.txt" | \
+while read temp;
+do
+    sed -i "${temp}s/give/learning/g" "sample.txt"
+done
+cat "sample.txt"
+___________________________________________________________________________________________________________________________________________________________________________________________________
