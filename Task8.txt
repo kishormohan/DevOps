@@ -1,0 +1,90 @@
+Create a dockerfile, file which when build must display your basic details in website:
+
+ubuntu@ip-172-31-84-167:~$ cat Dockerfile
+From nginx
+RUN apt update
+COPY index.html /usr/share/nginx/html
+EXPOSE 8005
+CMD ["nginx","-g","daemon off;"]
+
+ubuntu@ip-172-31-84-167:~$ cat index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Basic Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        .details {
+            margin-top: 20px;
+        }
+        .details p {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>My Basic Details</h1>
+        <div class="details">
+            <p><strong>Name:</strong> Kishor Kumar</p>
+            <p><strong>Email:</strong> kishorkm.mohan@gmail.com</p>
+            <p><strong>Phone:</strong> +91 8870822844</p>
+            <p><strong>Location:</strong> Chennai</p>
+            <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/kishor-kumar-23816355/"> Kishor-kumar</a></p>
+        </div>
+    </div>
+</body>
+</html>
+
+ubuntu@ip-172-31-84-167:~$ docker build -t nginx:v1.0 .
+[+] Building 0.1s (8/8) FINISHED                                                                                                                                                                                        docker:default
+ => [internal] load build definition from Dockerfile                                                                                                                                                                              0.0s
+ => => transferring dockerfile: 147B                                                                                                                                                                                              0.0s
+ => [internal] load metadata for docker.io/library/nginx:latest                                                                                                                                                                   0.0s
+ => [internal] load .dockerignore                                                                                                                                                                                                 0.0s
+ => => transferring context: 2B                                                                                                                                                                                                   0.0s
+ => [1/3] FROM docker.io/library/nginx:latest                                                                                                                                                                                     0.0s
+ => [internal] load build context                                                                                                                                                                                                 0.0s
+ => => transferring context: 32B                                                                                                                                                                                                  0.0s
+ => CACHED [2/3] RUN apt update                                                                                                                                                                                                   0.0s
+ => CACHED [3/3] COPY index.html /usr/share/nginx/html                                                                                                                                                                            0.0s
+ => exporting to image                                                                                                                                                                                                            0.0s
+ => => exporting layers                                                                                                                                                                                                           0.0s
+ => => writing image sha256:ea6b926005a577db57ba73d0d679f5922790f8ca6f5a757ed5545e8e1436532a                                                                                                                                      0.0s
+ => => naming to docker.io/library/nginx:v1.0                                                                                                                                                                                     0.0s
+ubuntu@ip-172-31-84-167:~$ cat docker-compose.yaml
+---
+services:
+  deploy:
+    image: nginx:v1.0
+    container_name: nginx-compose
+    ports:
+      - 8086:80
+
+ubuntu@ip-172-31-84-167:~$ docker-compose up -d
+Creating nginx-compose ... done
+ubuntu@ip-172-31-84-167:~$ docker images
+REPOSITORY    TAG       IMAGE ID       CREATED          SIZE
+nginx         v1.0      ea6b926005a5   52 minutes ago   207MB
+nginx         latest    7383c266ef25   7 days ago       188MB
+ubuntu        latest    de52d803b224   7 days ago       76.2MB
+hello-world   latest    d2c94e258dcb   12 months ago    13.3kB
+
+ubuntu@ip-172-31-84-167:~$ docker ps
+CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS          PORTS                                             NAMES
+810282270d89   nginx:v1.0   "/docker-entrypoint.…"   22 seconds ago   Up 21 seconds   8005/tcp, 0.0.0.0:8086->80/tcp, :::8086->80/tcp   nginx-compose
+ubuntu@ip-172-31-84-167:~$
+
