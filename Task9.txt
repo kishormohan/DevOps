@@ -1,0 +1,159 @@
+Create a custom docker image for nginx and deploy it using docker compose, where the volume bind mount should be at /var/opt/nginx location. Push the created custom docker image to your docker-hub:
+
+
+
+ubuntu@ip-172-31-84-167:~$ cat Dockerfile
+From nginx
+RUN apt update
+COPY index.html /usr/share/nginx/html
+EXPOSE 8005
+CMD ["nginx","-g","daemon off;"]
+ubuntu@ip-172-31-84-167:~$ cat index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Webpage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav {
+            background-color: #444;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+        section {
+            padding: 20px;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Webpage</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+    <section>
+        <h2>About Us</h2>
+        <p>This is a sample webpage. You can replace this content with your own.</p>
+    </section>
+    <footer>
+        <p>&copy; 2024 My Webpage. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+
+
+ubuntu@ip-172-31-84-167:~$ docker build -t nginx:v3.0 .
+[+] Building 0.1s (8/8) FINISHED                                                                                                                                                                                        docker:default
+ => [internal] load build definition from Dockerfile                                                                                                                                                                              0.0s
+ => => transferring dockerfile: 147B                                                                                                                                                                                              0.0s
+ => [internal] load metadata for docker.io/library/nginx:latest                                                                                                                                                                   0.0s
+ => [internal] load .dockerignore                                                                                                                                                                                                 0.0s
+ => => transferring context: 2B                                                                                                                                                                                                   0.0s
+ => [1/3] FROM docker.io/library/nginx:latest                                                                                                                                                                                     0.0s
+ => [internal] load build context                                                                                                                                                                                                 0.0s
+ => => transferring context: 32B                                                                                                                                                                                                  0.0s
+ => CACHED [2/3] RUN apt update                                                                                                                                                                                                   0.0s
+ => CACHED [3/3] COPY index.html /usr/share/nginx/html                                                                                                                                                                            0.0s
+ => exporting to image                                                                                                                                                                                                            0.0s
+ => => exporting layers                                                                                                                                                                                                           0.0s
+ => => writing image sha256:ea6b926005a577db57ba73d0d679f5922790f8ca6f5a757ed5545e8e1436532a                                                                                                                                      0.0s
+ => => naming to docker.io/library/nginx:v3.0 
+ 
+ ubuntu@ip-172-31-84-167:~$ cat docker-compose.yaml
+---
+services:
+  Test:
+    image: nginx:v3.0
+    container_name: nginx-test
+    ports:
+      - 8086:80
+    volumes:
+      - ./Test:/var/opt/nginx
+
+
+ubuntu@ip-172-31-84-167:~$ docker-compose up -d
+Creating nginx-test ... done
+
+ubuntu@ip-172-31-84-167:~$ docker images
+REPOSITORY    TAG       IMAGE ID       CREATED          SIZE
+nginx         v3.0      f688a6f1cf33   16 minutes ago   207MB
+nginx         v1.0      ea6b926005a5   20 hours ago     207MB
+nginx         latest    7383c266ef25   8 days ago       188MB
+ubuntu        latest    de52d803b224   8 days ago       76.2MB
+hello-world   latest    d2c94e258dcb   12 months ago    13.3kB
+
+ubuntu@ip-172-31-84-167:~$ docker ps
+CONTAINER ID   IMAGE        COMMAND                  CREATED          STATUS          PORTS                                             NAMES
+97ee537c7aa1   nginx:v3.0   "/docker-entrypoint.…"   10 minutes ago   Up 10 minutes   8005/tcp, 0.0.0.0:8086->80/tcp, :::8086->80/tcp   nginx-test
+ubuntu@ip-172-31-84-167:~$
+
+ubuntu@ip-172-31-84-167:~$ docker tag nginx:v3.0 kishorkm03/devops_test:latest
+ubuntu@ip-172-31-84-167:~$
+ubuntu@ip-172-31-84-167:~$ docker images
+REPOSITORY               TAG       IMAGE ID       CREATED          SIZE
+kishorkm03/devops_test   latest    f688a6f1cf33   19 minutes ago   207MB
+nginx                    v3.0      f688a6f1cf33   19 minutes ago   207MB
+nginx                    v1.0      ea6b926005a5   20 hours ago     207MB
+nginx                    latest    7383c266ef25   8 days ago       188MB
+ubuntu                   latest    de52d803b224   8 days ago       76.2MB
+hello-world              latest    d2c94e258dcb   12 months ago    13.3kB
+
+
+ubuntu@ip-172-31-84-167:~$ docker login
+Log in with your Docker ID or email address to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com/ to create one.
+You can log in with your password or a Personal Access Token (PAT). Using a limited-scope PAT grants better security and is required for organizations using SSO. Learn more at https://docs.docker.com/go/access-tokens/
+
+Username: kishorkm03
+Password:
+WARNING! Your password will be stored unencrypted in /home/ubuntu/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+ubuntu@ip-172-31-84-167:~$ docker push kishorkm03/devops_test:latest
+The push refers to repository [docker.io/kishorkm03/devops_test]
+cf33c3e0cd74: Pushed
+801c386266e5: Pushed
+9fd54926bcae: Mounted from library/nginx
+175aa66db4cc: Mounted from library/nginx
+e6380a7057a5: Mounted from library/nginx
+1db2242fc1fa: Mounted from library/nginx
+b09347a1aec6: Mounted from library/nginx
+bbde741e108b: Mounted from library/nginx
+52ec5a4316fa: Mounted from library/nginx
+latest: digest: sha256:0a925d17b110c250f61e96889fca36717cda4f9c43f358740f59902b8004dd9d size: 2197
+
