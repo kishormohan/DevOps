@@ -1,0 +1,62 @@
+
+Launch jenkins and explore creating projects and users:
+
+
+ubuntu@ip-172-31-61-216:~$ sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+    https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+--2024-05-03 06:22:25--  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+Resolving pkg.jenkins.io (pkg.jenkins.io)... 146.75.34.133, 2a04:4e42:77::645
+Connecting to pkg.jenkins.io (pkg.jenkins.io)|146.75.34.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 3175 (3.1K) [application/pgp-keys]
+Saving to: ‘/usr/share/keyrings/jenkins-keyring.asc’
+
+/usr/share/keyrings/jenkins-keyring.asc                   100%[====================================================================================================================================>]   3.10K  --.-KB/s    in 0s
+
+2024-05-03 06:22:25 (41.9 MB/s) - ‘/usr/share/keyrings/jenkins-keyring.asc’ saved [3175/3175]
+
+ubuntu@ip-172-31-61-216:~$ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+    https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+    /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+
+ubuntu@ip-172-31-61-216:~$ sudo apt-get install jenkins
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+  net-tools
+The following NEW packages will be installed:
+  jenkins net-tools
+0 upgraded, 2 newly installed, 0 to remove and 12 not upgraded.
+Need to get 91.6 MB of archives.
+After this operation, 94.4 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble/main amd64 net-tools amd64 2.10-0.1ubuntu4 [204 kB]
+Get:2 https://pkg.jenkins.io/debian-stable binary/ jenkins 2.440.3 [91.4 MB]
+Fetched 91.6 MB in 24s (3803 kB/s)
+Selecting previously unselected package net-tools.
+(Reading database ... 86346 files and directories currently installed.)
+Preparing to unpack .../net-tools_2.10-0.1ubuntu4_amd64.deb ...
+Unpacking net-tools (2.10-0.1ubuntu4) ...
+Selecting previously unselected package jenkins.
+Preparing to unpack .../jenkins_2.440.3_all.deb ...
+Unpacking jenkins (2.440.3) ...
+Setting up net-tools (2.10-0.1ubuntu4) ...
+Setting up jenkins (2.440.3) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/jenkins.service → /usr/lib/systemd/system/jenkins.service.
+Processing triggers for man-db (2.12.0-4build2) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+
+
