@@ -1,0 +1,35 @@
+Started by GitHub push by kishormohan
+Running as SYSTEM
+Building in workspace /var/lib/jenkins/workspace/Test_trigger
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/Test_trigger/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/kishormohan/Test_Repo.git # timeout=10
+Fetching upstream changes from https://github.com/kishormohan/Test_Repo.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+ > git fetch --tags --force --progress -- https://github.com/kishormohan/Test_Repo.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Seen branch in repository origin/main
+Seen branch in repository origin/master
+Seen 2 remote branches
+ > git show-ref --tags -d # timeout=10
+Checking out Revision 2f47f8e44dda30a4af065ca1e2b1f606f39c17e7 (origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 2f47f8e44dda30a4af065ca1e2b1f606f39c17e7 # timeout=10
+Commit message: "Update Task3.txt"
+ > git rev-list --no-walk 27c69b1ec849bf2a0eacf9c18ef85faab39d8013 # timeout=10
+No emails were triggered.
+[Test_trigger] $ /bin/sh -xe /tmp/jenkins15912153716950644953.sh
++ ls -ltrh
+total 20K
+-rw-r--r-- 1 jenkins jenkins   11 May  6 09:19 README.md
+-rw-r--r-- 1 jenkins jenkins  129 May  6 09:19 Task2.txt
+-rw-r--r-- 1 jenkins jenkins  268 May  6 09:19 Task1.txt
+-rw-r--r-- 1 jenkins jenkins 7.8K May  6 10:34 Task3.txt
++ echo Trigger Test successful
+Trigger Test successful
+Email was triggered for: Always
+Sending email for trigger: Always
+Not sending mail to unregistered user (id: noreply, email: noreply@github.com) because your SCM claimed this was associated with a user ID 'noreply' which your security realm does not recognize; you may need changes in your SCM plugin
+Sending email to: kishorkumara03@gmail.com
